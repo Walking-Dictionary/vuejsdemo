@@ -12,6 +12,25 @@
 
 	<body>
 
+
+		<div id="todo-list-example">
+  			<input
+    			v-model="newTodoText"
+    			v-on:keyup.enter="addNewTodo"
+   			 	placeholder="Add a todo"
+  			>
+  			<ul>
+    			<li
+      				is="todo-item"
+      				v-for="(todo, index) in todos"
+      				v-bind:title="todo"
+      				v-on:remove="todos.splice(index, 1)"
+    			>	
+    			</li>
+  			</ul>
+		</div>
+
+
 		<br>
 	  	<div id="app" >
         	{{ message }}
@@ -39,6 +58,35 @@
 
 		<script type="text/javascript">
 
+
+			Vue.component('todo-item', {
+				  template: '\
+				    <li>\
+				      {{ title }}\
+				      <button v-on:click="$emit(\'remove\')">X</button>\
+				    </li>\
+				  ',
+				  props: ['title']
+				})
+
+			new Vue({
+			  el: '#todo-list-example',
+			  data: {
+			    newTodoText: '',
+			    todos: [
+			      'Vue Documentation perusal     ',
+			      'Do the Vue Laracast Tutorial  ',
+			      'Make an app simple but special'
+			    ]
+			  },
+
+			  methods: {
+			    addNewTodo: function () {
+			      this.todos.push(this.newTodoText)
+			      this.newTodoText = ''
+			    }
+			  }
+			})
 
 			var app = new Vue({
   				el: '#app',
